@@ -7,7 +7,7 @@ type PeopleListProps = {
 }
 
 const PeopleList: FC<PeopleListProps> = ({ people }) => {
-  const PeopleComponents = people.map((person) => <Person person={person} />)
+  const PeopleComponents = people.map((person) => <Person key={person.id} person={person} />)
   return <div>{PeopleComponents}</div>
 }
 
