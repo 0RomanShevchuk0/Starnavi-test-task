@@ -1,9 +1,10 @@
-import HomePage from "@/containers/home-page/HomePage"
+import Link from "next/link"
 
-export default async function Home() {
+export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <HomePage />
+      <h2>Home page</h2>
+      <Link href="/people">To People</Link>
     </main>
   )
 }

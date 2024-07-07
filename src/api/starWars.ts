@@ -1,19 +1,15 @@
-import { IPerson, PeopleResponseType } from "@/types/people"
+import { PeopleResponseType } from "@/types/people"
 import axios from "axios"
 
 export const baseURL = "https://sw-api.starnavi.io/"
 
 export const instance = axios.create({
   baseURL,
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
 })
 
-export async function getPeople(): Promise<PeopleResponseType> {
+export async function getPeople(page: number): Promise<PeopleResponseType> {
   try {
-    return (await instance.get("people")).data
+    return (await instance.get(`people?page=${page}`)).data
   } catch (error) {
     throw error
   }

@@ -1,6 +1,6 @@
 import { ApiResponse } from "."
 
-export interface IPerson {
+export interface Person {
   id: number
   name: string
   height: string
@@ -20,4 +20,4 @@ export interface IPerson {
   url: string
 }
 
-export type PeopleResponseType = ApiResponse<IPerson>
+export type PeopleResponseType = ApiResponse<Person>
