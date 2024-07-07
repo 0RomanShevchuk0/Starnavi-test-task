@@ -1,4 +1,4 @@
-import { ApiResponse } from "."
+import { ApiListResponse } from "."
 
 export interface Person {
   id: number
@@ -20,4 +20,4 @@ export interface Person {
   url: string
 }
 
-export type PeopleResponseType = ApiResponse<Person>
+export type PeopleResponseType = ApiListResponse<Person>
