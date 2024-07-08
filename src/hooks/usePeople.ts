@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { getPeople } from "@/api/starWars"
+import { getPeople } from "@/api/people"
 import { Person } from "@/types/people"
 
 const usePeople = () => {

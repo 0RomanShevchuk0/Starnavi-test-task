@@ -1,4 +1,4 @@
-import { ApiListResponse } from "."
+import { ApiListResponse } from "@/types/index"
 
 export interface Person {
   id: number
