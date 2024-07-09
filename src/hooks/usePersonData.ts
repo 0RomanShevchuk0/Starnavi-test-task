@@ -6,7 +6,7 @@ import { Film } from "@/types/films"
 import { getStarships } from "@/api/starships"
 import { Starship } from "@/types/starship"
 
-const usePerson = (id: string) => {
+const usePersonData = (id: string) => {
   const [person, setPerson] = useState<Person | null>(null)
   const [films, setFilms] = useState<Film[]>([])
   const [starships, setStarships] = useState<Starship[]>([])
@@ -22,15 +22,15 @@ const usePerson = (id: string) => {
 
       try {
         const personResponse = await getPersonById(id)
-        setPerson(personResponse)
 
         const filmsParams = { characters__contains: personResponse.id }
         const starshipParams = { id__in: personResponse.starships.join(",") }
 
         const filmsResponse = await getFilms(filmsParams)
-        setFilms(filmsResponse.results)
-
         const starshipResponse = await getStarships(starshipParams)
+
+        setPerson(personResponse)
+        setFilms(filmsResponse.results)
         setStarships(starshipResponse.results)
       } catch (err) {
         setError("Error fetching person data.")
@@ -46,4 +46,4 @@ const usePerson = (id: string) => {
   return { person, films, starships, isLoading, error }
 }
 
-export default usePerson
+export default usePersonData

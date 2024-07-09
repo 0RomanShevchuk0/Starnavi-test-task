@@ -1,5 +1,5 @@
 "use client"
-import usePerson from "@/hooks/usePerson"
+import usePersonData from "@/hooks/usePersonData"
 import { useParams } from "next/navigation"
 import { FC } from "react"
 import ReactFlow, { Background, BackgroundVariant, Controls, ReactFlowProvider } from "reactflow"
@@ -12,7 +12,7 @@ const PersonPage: FC = () => {
     return <div className="text-red-500 text-center mt-10">Invalid person ID</div>
   }
 
-  const { person, films, starships, isLoading, error } = usePerson(id)
+  const { person, films, starships, isLoading, error } = usePersonData(id)
 
   if (isLoading) return <div className="text-center mt-10">Loading...</div>
   if (error) return <div className="text-red-500 text-center mt-10">{error}</div>
@@ -23,15 +23,38 @@ const PersonPage: FC = () => {
   const filmsNodes = films.map((film, index) => {
     const xPosition = index * nodeXSpacing
     return {
-      id: `film${film.id}`,
+      id: `filmNode${film.id}`,
       position: { x: xPosition, y: 200 },
       data: { label: film.title },
     }
   })
   const filmsEdges = films.map((film) => ({
-    id: `edge${film.id}`,
+    id: `filmEdge${film.id}`,
     source: "person",
-    target: `film${film.id}`,
+    target: `filmNode${film.id}`,
+  }))
+
+  const starshipsNodes = starships.map((starship, index) => {
+    const xPosition = index * nodeXSpacing * (films.length / starships.length) + 20
+    return {
+      id: `starshipNode${starship.id}`,
+      position: { x: xPosition, y: 400 },
+      data: { label: starship.name },
+    }
+  })
+
+  const starshipIdSet = new Set(starships.map((starship) => starship.id))
+  const starshipsInFilms = films.flatMap((film) =>
+    film.starships
+      .filter((starshipId) => starshipIdSet.has(starshipId))
+      .map((starshipId) => ({ film: film.id, starship: starshipId }))
+  )
+  console.log("starshipsInFilms:", starshipsInFilms)
+
+  const starshipsEdges = starshipsInFilms.map(({ film, starship }, index) => ({
+    id: `starshipEdge${index}`,
+    source: `filmNode${film}`,
+    target: `starshipNode${starship}`,
   }))
 
   const nodes = [
@@ -41,8 +64,9 @@ const PersonPage: FC = () => {
       data: { label: person.name },
     },
     ...filmsNodes,
+    ...starshipsNodes,
   ]
-  const edges = [...filmsEdges]
+  const edges = [...filmsEdges, ...starshipsEdges]
 
   return (
     <div className="flex flex-col gap-3 items-center rounded-lg shadow-md p-6">
