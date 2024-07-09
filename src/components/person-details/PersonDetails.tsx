@@ -1,5 +1,5 @@
 import React, { FC } from "react"
-import PropertyBox from "@/components/PersonDetails/PropertyBox"
+import PropertyBox from "@/components/person-details/PropertyBox"
 import { Person } from "@/types/people"
 
 type PersonDetailsProps = {
