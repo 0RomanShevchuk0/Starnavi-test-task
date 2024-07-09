@@ -1,4 +1,5 @@
 import { Film } from "@/types/films"
+import { Person } from "@/types/people"
 import { Starship } from "@/types/starship"
 
 interface Node {
@@ -12,10 +13,20 @@ interface Edge {
   source: string
   target: string
 }
+
 export const nodeXSpacing = 200
+
+export const createPersonNode = (person: Person, films: Film[]) => ({
+  id: "person",
+  position: { x: (films.length * nodeXSpacing) / 2 - nodeXSpacing / 2, y: 50 },
+  data: { label: person.name },
+})
 
 const calculateXPosition = (index: number, spacing: number, factor = 1, offset = 0) =>
   index * spacing * factor + offset
+
+const calculateStarshipXOffet = (filmsLength: number, starshipsLength: number) =>
+  ((filmsLength / starshipsLength) * nodeXSpacing) / 2 - nodeXSpacing / 2
 
 export const createFilmNodes = (films: Film[]): Node[] => {
   return films.map((film, index) => ({
@@ -36,9 +47,10 @@ export const createFilmEdges = (films: Film[]): Edge[] => {
 export const createStarshipNodes = (starships: Starship[], filmsLength: number): Node[] => {
   return starships.map((starship, index) => {
     const positionFactor = filmsLength / starships.length
+    const offset = calculateStarshipXOffet(filmsLength, starships.length)
     return {
       id: `starshipNode${starship.id}`,
-      position: { x: calculateXPosition(index, nodeXSpacing, positionFactor, 20), y: 400 },
+      position: { x: calculateXPosition(index, nodeXSpacing, positionFactor, offset), y: 400 },
       data: { label: starship.name },
     }
   })

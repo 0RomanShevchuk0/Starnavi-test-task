@@ -4,6 +4,7 @@ import { Starship } from "@/types/starship"
 import {
   createFilmEdges,
   createFilmNodes,
+  createPersonNode,
   createStarshipEdges,
   createStarshipNodes,
   nodeXSpacing,
@@ -19,21 +20,14 @@ type PersonDetailsGraphProps = {
 }
 
 const PersonDetailsGraph: FC<PersonDetailsGraphProps> = ({ person, films, starships }) => {
+  const personNode = createPersonNode(person, films)
   const filmsNodes = createFilmNodes(films)
   const filmsEdges = createFilmEdges(films)
 
   const starshipsNodes = createStarshipNodes(starships, films.length)
   const starshipsEdges = createStarshipEdges(starships, films)
 
-  const nodes = [
-    {
-      id: "person",
-      position: { x: (films.length * nodeXSpacing) / 2 - nodeXSpacing / 2, y: 50 },
-      data: { label: person.name },
-    },
-    ...filmsNodes,
-    ...starshipsNodes,
-  ]
+  const nodes = [personNode, ...filmsNodes, ...starshipsNodes]
   const edges = [...filmsEdges, ...starshipsEdges]
 
   return (
