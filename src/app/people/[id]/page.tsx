@@ -1,5 +1,12 @@
 "use client"
 import usePersonData from "@/hooks/usePersonData"
+import {
+  createFilmEdges,
+  createFilmNodes,
+  createStarshipEdges,
+  createStarshipNodes,
+  nodeXSpacing,
+} from "@/utils/createNodesAndEdges"
 import { useParams } from "next/navigation"
 import { FC } from "react"
 import ReactFlow, { Background, BackgroundVariant, Controls, ReactFlowProvider } from "reactflow"
@@ -18,44 +25,11 @@ const PersonPage: FC = () => {
   if (error) return <div className="text-red-500 text-center mt-10">{error}</div>
   if (!person) return <div className="text-center mt-10">No person found</div>
 
-  const nodeXSpacing = 200
+  const filmsNodes = createFilmNodes(films)
+  const filmsEdges = createFilmEdges(films)
 
-  const filmsNodes = films.map((film, index) => {
-    const xPosition = index * nodeXSpacing
-    return {
-      id: `filmNode${film.id}`,
-      position: { x: xPosition, y: 200 },
-      data: { label: film.title },
-    }
-  })
-  const filmsEdges = films.map((film) => ({
-    id: `filmEdge${film.id}`,
-    source: "person",
-    target: `filmNode${film.id}`,
-  }))
-
-  const starshipsNodes = starships.map((starship, index) => {
-    const xPosition = index * nodeXSpacing * (films.length / starships.length) + 20
-    return {
-      id: `starshipNode${starship.id}`,
-      position: { x: xPosition, y: 400 },
-      data: { label: starship.name },
-    }
-  })
-
-  const starshipIdSet = new Set(starships.map((starship) => starship.id))
-  const starshipsInFilms = films.flatMap((film) =>
-    film.starships
-      .filter((starshipId) => starshipIdSet.has(starshipId))
-      .map((starshipId) => ({ film: film.id, starship: starshipId }))
-  )
-  console.log("starshipsInFilms:", starshipsInFilms)
-
-  const starshipsEdges = starshipsInFilms.map(({ film, starship }, index) => ({
-    id: `starshipEdge${index}`,
-    source: `filmNode${film}`,
-    target: `starshipNode${starship}`,
-  }))
+  const starshipsNodes = createStarshipNodes(starships, films.length)
+  const starshipsEdges = createStarshipEdges(starships, films)
 
   const nodes = [
     {
