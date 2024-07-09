@@ -12,6 +12,7 @@ const usePeople = () => {
   const fetchPeople = async (page: number) => {
     setIsLoading(true)
     setError(null)
+
     try {
       const response = await getPeople(page)
       setPeople((prev) => [...prev, ...response.results])
@@ -25,13 +26,17 @@ const usePeople = () => {
     }
   }
 
-  useEffect(() => {
-    fetchPeople(currentPage)
-  }, [])
-
   const loadMore = () => {
     fetchPeople(currentPage)
   }
+
+  useEffect(() => {
+    const fetchInitialPages = async () => {
+      await fetchPeople(1)
+      await fetchPeople(2)
+    }
+    fetchInitialPages()
+  }, [])
 
   return { people, isNext, isLoading, error, loadMore }
 }
