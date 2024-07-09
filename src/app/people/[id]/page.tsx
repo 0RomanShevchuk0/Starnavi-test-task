@@ -15,8 +15,6 @@ const PersonPage: FC = () => {
   }
 
   const { person, films, starships, isLoading, error } = usePersonData(id)
-  console.log("starships:", starships)
-  console.log("films:", films)
 
   if (isLoading) return <Message message="Loading..." />
   if (error) return <Message message={error} isError={true} />
