@@ -2,7 +2,7 @@ import { render, fireEvent } from "@testing-library/react"
 import PeoplePage from "@/app/people/page"
 import usePeople from "@/hooks/usePeople"
 
-jest.mock("../src/hooks/usePeople")
+jest.mock("../../src/hooks/usePeople")
 
 const mockUsePeople = usePeople as jest.MockedFunction<typeof usePeople>
 
