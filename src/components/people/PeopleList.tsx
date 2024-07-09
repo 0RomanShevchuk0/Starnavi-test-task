@@ -1,4 +1,3 @@
-"use client"
 import { FC } from "react"
 import { Person } from "@/types/people"
 import PeopleListItem from "@/components/people/PeopleListItem"

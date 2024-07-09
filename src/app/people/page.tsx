@@ -3,6 +3,7 @@ import { FC, useCallback, useEffect } from "react"
 import PeopleList from "@/components/people/PeopleList"
 import usePeople from "@/hooks/usePeople"
 import { debounceCallBack } from "@/utils/debounceCallBack"
+import Message from "@/components/Message"
 
 const PeoplePage: FC = () => {
   const { people, isNext, isLoading, error, loadMore } = usePeople()
@@ -28,9 +29,9 @@ const PeoplePage: FC = () => {
   return (
     <div className="flex flex-col items-center gap-6 p-6">
       <h2 className="text-6xl font-bold">People Page</h2>
-      {error && <div>{error}</div>}
+      {error && <Message message={error} isError={true} />}
       <PeopleList people={people} />
-      {isLoading && <div>Loading...</div>}
+      {isLoading && <Message message="Loading..." />}
     </div>
   )
 }

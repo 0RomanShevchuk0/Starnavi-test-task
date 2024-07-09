@@ -1,4 +1,3 @@
-"use client"
 import { Person } from "@/types/people"
 import Link from "next/link"
 import { FC } from "react"
